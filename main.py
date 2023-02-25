@@ -1,40 +1,9 @@
-from telegram import Update
+import telebot
 
-import Constants as keys
-from telegram.ext import *
+bot = telebot.TeleBot('6262495766:AAGN54gw1NlhwNxrx3jiRM1bZ2NIq2V7skY')
 
-import Responses as R
+@bot.message_handler(command=['start'])
+def start(message):
+    bot.send_message(message.chat.id, '<b>Privet</b>', parse_mode='html')
 
-print("Bot started....")
-
-def start_command(update, context):
-    update.message.reply_text('Type something random to get started!')
-
-def help_command(update, context):
-    update.message.reply_text('If you need help just ask Google!')
-
-def handle_command(update, context):
-      text = str(update.message.text).lower()
-      response = R.sample_responses(text)
-
-      update.message.reply_text(response)
-
-def error(update, context):
-    print(f"Update {Update} caused error {context.error}")
-
-    def main():
-        updater = Updater(keys.API_KEY, use_context=True)
-        dp = updater.dispatcher
-
-        dp.add_handler(CommandHandler("start", start_command))
-        dp.add_handler(CommandHandler("start", help_command))
-
-        dp.add_handler(MessageHandler(Filters.text, handle_message))
-
-        dp.add_error_handler(error)
-
-        updater.start_polling()
-        updater.idle()
-
-    main()
-
+bot.polling(none_stop=True)
